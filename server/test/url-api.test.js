@@ -89,12 +89,12 @@ test('creates, lists, inspects, redirects, and deletes a short url', async () =>
       method: 'DELETE'
     })
 
-    assert.equal(deleted.response.status, 200)
-    assert.equal(deleted.body.data.deleted, true)
+    assert.equal(deleted.response.status, 405)
+    assert.equal(deleted.body.error, 'Deletion is unavailable until account access is implemented.')
 
     const missing = await requestJson(baseUrl, `/api/urls/${shortCode}`)
-    assert.equal(missing.response.status, 404)
-    assert.equal(missing.body.error, 'Short code not found.')
+    assert.equal(missing.response.status, 200)
+    assert.equal(missing.body.data.shortCode, shortCode)
   } finally {
     await stopServer(server)
   }
@@ -109,8 +109,8 @@ test('rejects deleting a missing short url', async () => {
       method: 'DELETE'
     })
 
-    assert.equal(deleted.response.status, 404)
-    assert.equal(deleted.body.error, 'Short code not found.')
+    assert.equal(deleted.response.status, 405)
+    assert.equal(deleted.body.error, 'Deletion is unavailable until account access is implemented.')
   } finally {
     await stopServer(server)
   }

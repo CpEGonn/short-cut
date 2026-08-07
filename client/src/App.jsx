@@ -51,9 +51,8 @@ function hostFromUrl(value) {
   }
 }
 
-function LinkCard({ link, onCopy, onDelete, copiedCode, deletingCode }) {
+function LinkCard({ link, onCopy, copiedCode }) {
   const isCopied = copiedCode === link.shortCode
-  const isDeleting = deletingCode === link.shortCode
 
   return (
     <article className="link-card">
@@ -71,14 +70,6 @@ function LinkCard({ link, onCopy, onDelete, copiedCode, deletingCode }) {
           </a>
           <button type="button" className="button button--secondary" onClick={() => onCopy(link.shortUrl, link.shortCode)}>
             {isCopied ? 'Copied' : 'Copy'}
-          </button>
-          <button
-            type="button"
-            className="button button--danger"
-            onClick={() => onDelete(link.shortCode, link.shortUrl)}
-            disabled={isDeleting}
-          >
-            {isDeleting ? 'Deleting�' : 'Delete'}
           </button>
         </div>
       </div>
@@ -118,8 +109,6 @@ export default function App() {
   const [loading, setLoading] = useState(false)
   const [refreshing, setRefreshing] = useState(false)
   const [copiedCode, setCopiedCode] = useState('')
-  const [deletingCode, setDeletingCode] = useState('')
-  const [pendingDelete, setPendingDelete] = useState(null)
 
   const recentLinks = useMemo(() => links.slice(0, 6), [links])
   const totalVisits = useMemo(() => links.reduce((sum, link) => sum + (link.visitCount ?? 0), 0), [links])
@@ -198,37 +187,6 @@ export default function App() {
     }
   }
 
-  function handleDelete(shortCode, shortUrl) {
-    setPendingDelete({ shortCode, shortUrl })
-  }
-
-  async function confirmDelete() {
-    if (!pendingDelete) {
-      return
-    }
-
-    const { shortCode } = pendingDelete
-    setDeletingCode(shortCode)
-
-    try {
-      await requestJson(`/urls/${shortCode}`, { method: 'DELETE' })
-      setLinks((current) => current.filter((item) => item.shortCode !== shortCode))
-
-      try {
-        await loadLinks()
-      } catch {
-        // Keep the local removal if the refresh fails.
-      }
-
-      setStatus({ type: 'success', message: 'Link removed from the archive.' })
-      setPendingDelete(null)
-    } catch (error) {
-      setStatus({ type: 'error', message: error.message })
-    } finally {
-      setDeletingCode('')
-    }
-  }
-
   return (
     <div className="page-shell">
       <main className="app-shell">
@@ -244,7 +202,6 @@ export default function App() {
             <div className="tag-list" aria-label="Product highlights">
               <span className="tag">HTTP/HTTPS only</span>
               <span className="tag">One-click copy</span>
-              <span className="tag">Delete stale entries</span>
               <span className="tag">Visit counts included</span>
             </div>
 
@@ -324,9 +281,7 @@ export default function App() {
                   key={link.shortCode}
                   link={link}
                   onCopy={handleCopy}
-                  onDelete={handleDelete}
                   copiedCode={copiedCode}
-                  deletingCode={deletingCode}
                 />
               ))}
             </div>
@@ -339,42 +294,6 @@ export default function App() {
         </section>
       </main>
 
-      {pendingDelete ? (
-        <div className="modal-backdrop" role="presentation" onClick={() => setPendingDelete(null)}>
-          <section
-            className="modal"
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="delete-title"
-            aria-describedby="delete-copy"
-            onClick={(event) => event.stopPropagation()}
-          >
-            <p className="label">Confirm delete</p>
-            <h2 id="delete-title">Remove this short link?</h2>
-            <p id="delete-copy" className="modal__copy">
-              {pendingDelete.shortUrl}
-            </p>
-            <p className="modal__support">
-              This removes the record from the archive. The original destination will no longer be available from
-              ShortCut.
-            </p>
-
-            <div className="modal__actions">
-              <button type="button" className="button button--ghost" onClick={() => setPendingDelete(null)}>
-                Cancel
-              </button>
-              <button
-                type="button"
-                className="button button--danger"
-                onClick={confirmDelete}
-                disabled={deletingCode === pendingDelete.shortCode}
-              >
-                {deletingCode === pendingDelete.shortCode ? 'Deleting�' : 'Delete link'}
-              </button>
-            </div>
-          </section>
-        </div>
-      ) : null}
     </div>
   )
 }

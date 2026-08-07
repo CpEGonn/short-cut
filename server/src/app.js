@@ -83,17 +83,10 @@ export function createApp(options = {}) {
     }
   })
 
-  app.delete('/api/urls/:shortCode', async (req, res, next) => {
-    try {
-      const deleted = await store.delete(req.params.shortCode)
-      if (!deleted) {
-        return sendError(res, 404, 'Short code not found.')
-      }
+  app.delete('/api/urls/:shortCode', (_req, res) => {
+    return sendError(res, 405, 'Deletion is unavailable until account access is implemented.')
+  })
 
-      return res.json({ data: { shortCode: deleted.shortCode, deleted: true } })
-    } catch (error) {
-      next(error)
-    }
   app.get('/api/redirect/:shortCode', async (req, res, next) => {
     try {
       const record = await store.get(req.params.shortCode)
@@ -107,9 +100,6 @@ export function createApp(options = {}) {
       next(error)
     }
   })
-
-  })
-
   app.get('/:shortCode', async (req, res, next) => {
     try {
       const record = await store.get(req.params.shortCode)
