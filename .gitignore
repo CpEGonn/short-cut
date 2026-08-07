@@ -1,0 +1,22 @@
+﻿# dependencies
+node_modules/
+client/node_modules/
+server/node_modules/
+
+# builds and coverage
+client/dist/
+server/coverage/
+coverage/
+
+# environment files
+.env
+.env.*
+client/.env
+client/.env.*
+server/.env
+server/.env.*
+
+# logs and OS files
+*.log
+.DS_Store
+Thumbs.db

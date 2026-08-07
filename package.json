@@ -1,0 +1,13 @@
+﻿{
+  "name": "short-cut",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "node scripts/dev.mjs",
+    "start": "npm start --prefix server",
+    "build": "npm run build --prefix client",
+    "test": "npm test --prefix server",
+    "install:all": "node scripts/install-all.mjs"
+  }
+}

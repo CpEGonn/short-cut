@@ -1,108 +1,82 @@
-# URL Shortener
+﻿# ShortCut
 
-A simple full-stack URL shortener with a React frontend and an Express backend. Paste a long URL, generate a short link, and use it to redirect visitors to the original destination.
-
-## Tech stack
-
-- Frontend: React
-- Backend: Express.js / Node.js
-- Database: Add your preferred database (for example, MongoDB or PostgreSQL) to persist links.
-
-## Features
-
-- Create short URLs from long links
-- Redirect short links to their original URLs
-- Validate submitted URLs
-- Copy generated short links
-- Optional: track visit counts and link creation dates
+ShortCut is a full-stack URL shortener built with React, Vite, Express, and Node.js. Paste an HTTP or HTTPS URL, generate a compact link, copy it, inspect its metadata through the API, or follow it back to the original destination.
 
 ## Project structure
 
 ```text
-url-shortener/
-├── client/             # React frontend
-│   ├── src/
-│   └── package.json
-├── server/             # Express API
-│   ├── index.js
-│   └── package.json
-└── README.md
+.
+|-- client/             # React + Vite frontend
+|-- server/             # Express API and tests
+|-- scripts/            # Root dev and install helpers
+|-- AGENTS.md           # Contributor guide
+`-- package.json        # Root scripts
 ```
 
-## Getting started
+## Requirements
 
-### Prerequisites
-
-- Node.js 18 or later
+- Node.js 20.19 or newer
 - npm
 
-### Install dependencies
-
-Install the frontend and backend dependencies separately:
+Install dependencies from the repository root:
 
 ```bash
-cd client
 npm install
-
-cd ../server
-npm install
+npm run install:all
 ```
 
-### Environment variables
+## Commands
 
-Create a `.env` file in the `server` directory:
+Run these from the repository root:
+
+| Command | Purpose |
+| --- | --- |
+| `npm run dev` | Start the API and frontend together |
+| `npm start` | Start only the Express API |
+| `npm test` | Run the backend API tests |
+| `npm run build` | Build the production frontend bundle |
+| `npm run install:all` | Install the client and server dependencies |
+
+## Configuration
+
+The backend reads these optional environment variables:
+
+| Variable | Default | Description |
+| --- | --- | --- |
+| `PORT` | `3000` | Express listening port |
+| `BASE_URL` | `http://localhost:3000` | Public origin used in generated short URLs |
+
+The frontend uses `VITE_API_URL` when the API is not available through the default Vite proxy:
 
 ```env
-PORT=5000
-BASE_URL=http://localhost:5000
+VITE_API_URL=http://localhost:3000/api
 ```
 
-Add database connection variables here if your backend uses a database.
+## API
 
-### Run the project
+Responses use either `{ "data": ... }` or `{ "error": "..." }`.
 
-Start the Express server:
-
-```bash
-cd server
-npm run dev
-```
-
-In another terminal, start React:
-
-```bash
-cd client
-npm start
-```
-
-The frontend typically runs at `http://localhost:3000` and the API at `http://localhost:5000`.
-
-## Suggested API endpoints
-
-| Method | Endpoint | Description |
+| Method | Endpoint | Purpose |
 | --- | --- | --- |
-| `POST` | `/api/shorten` | Create a shortened URL |
-| `GET` | `/api/urls/:code` | Retrieve short-link details |
-| `GET` | `/:code` | Redirect to the original URL |
+| `GET` | `/api/health` | Health check |
+| `GET` | `/api/urls` | List the 10 most recent links |
+| `POST` | `/api/urls` | Create a short URL from `{ "url": "https://example.com" }` |
+| `GET` | `/api/urls/:shortCode` | Read a stored link record |
+| `DELETE` | `/api/urls/:shortCode` | Delete a stored short URL |
+| `GET` | `/:shortCode` | Redirect to the original URL |
 
-Example request:
+Invalid URLs return `400`. Unknown short codes return `404`.
 
-```json
-POST /api/shorten
-{
-  "url": "https://example.com/a/very/long/link"
-}
+## Testing
+
+The backend uses Node's built-in `node:test` runner. Run the suite with:
+
+```bash
+npm test
 ```
 
-Example response:
+The tests start the Express app on an ephemeral port and exercise the HTTP contract end to end.
 
-```json
-{
-  "shortUrl": "http://localhost:5000/abc123",
-  "code": "abc123"
-}
-```
+## Persistence
 
-## License
-
-This project is available for learning and personal use.
+URL records are stored in memory. Restarting the API clears all links, so add a persistent datastore before using this in production.
