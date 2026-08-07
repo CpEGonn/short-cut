@@ -1,14 +1,15 @@
-﻿{
+{
   "name": "short-cut-server",
   "private": true,
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "node src/index.js",
-    "start": "node src/index.js",
+    "dev": "node --env-file-if-exists=.env src/index.js",
+    "start": "node --env-file-if-exists=.env src/index.js",
     "test": "node --test"
   },
   "dependencies": {
+    "@neondatabase/serverless": "^1.1.0",
     "cors": "^2.8.5",
     "express": "^4.21.2",
     "helmet": "^8.0.0"

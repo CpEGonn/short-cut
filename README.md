@@ -1,13 +1,13 @@
-﻿# ShortCut
+# ShortCut
 
-ShortCut is a full-stack URL shortener built with React, Vite, Express, and Node.js. Paste an HTTP or HTTPS URL, generate a compact link, copy it, inspect its metadata through the API, or follow it back to the original destination.
+ShortCut is a full-stack URL shortener built with React, Vite, Express, and Neon Serverless Postgres. Paste an HTTP or HTTPS URL, generate a compact link, copy it, inspect its metadata through the API, or follow it back to the original destination.
 
 ## Project structure
 
 ```text
 .
 |-- client/             # React + Vite frontend
-|-- server/             # Express API and tests
+|-- server/             # Express API, SQL schema, and tests
 |-- scripts/            # Root dev and install helpers
 |-- AGENTS.md           # Contributor guide
 `-- package.json        # Root scripts
@@ -17,6 +17,7 @@ ShortCut is a full-stack URL shortener built with React, Vite, Express, and Node
 
 - Node.js 20.19 or newer
 - npm
+- A Neon Postgres database and connection string
 
 Install dependencies from the repository root:
 
@@ -45,6 +46,19 @@ The backend reads these optional environment variables:
 | --- | --- | --- |
 | `PORT` | `3000` | Express listening port |
 | `BASE_URL` | `http://localhost:3000` | Public origin used in generated short URLs |
+| `DATABASE_URL` | none | Neon Serverless Postgres connection string |
+
+Create a local `server/.env` file with your Neon connection string. In deployment, set `DATABASE_URL` in the platform environment instead:
+
+```env
+PORT=3000
+BASE_URL=http://localhost:3000
+DATABASE_URL=postgresql://[user]:[password]@[neon_hostname]/[dbname]?sslmode=require
+```
+
+The connection string comes from your Neon project dashboard. The app auto-creates the `urls` table on startup if it does not exist, and the canonical schema lives in [server/sql/schema.sql](server/sql/schema.sql).
+
+If you want to create the table manually in Neon first, run the SQL in that file in the Neon SQL Editor.
 
 The frontend uses `VITE_API_URL` when the API is not available through the default Vite proxy:
 
@@ -79,4 +93,4 @@ The tests start the Express app on an ephemeral port and exercise the HTTP contr
 
 ## Persistence
 
-URL records are stored in memory. Restarting the API clears all links, so add a persistent datastore before using this in production.
+URL records are stored in Neon Serverless Postgres. Restarting the API no longer clears the data, so use Neon branches or your own migration workflow before changing the schema in production.

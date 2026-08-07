@@ -1,9 +1,13 @@
-﻿const DEFAULT_API_ROOT = '/api';
-const apiRoot = (import.meta.env.VITE_API_URL ?? DEFAULT_API_ROOT).replace(/\/+$/, '');
+const DEFAULT_API_ROOT = '/api';
+
+function resolveApiRoot() {
+  const configuredRoot = import.meta.env?.VITE_API_URL ?? globalThis.__SHORTCUT_API_URL__;
+  return String(configuredRoot ?? DEFAULT_API_ROOT).replace(/\/+$/, '');
+}
 
 export function buildApiUrl(path) {
   const suffix = path.startsWith('/') ? path : `/${path}`;
-  return `${apiRoot}${suffix}`;
+  return `${resolveApiRoot()}${suffix}`;
 }
 
 export async function requestJson(path, init = {}) {

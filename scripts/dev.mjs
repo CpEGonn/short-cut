@@ -1,4 +1,4 @@
-﻿import { spawn } from 'node:child_process';
+import { spawn } from 'node:child_process';
 
 const npmCommand = process.platform === 'win32' ? 'npm.cmd' : 'npm';
 const children = new Map();
@@ -6,10 +6,17 @@ const children = new Map();
 function startTask(label, args) {
   const child = spawn(npmCommand, args, {
     stdio: 'inherit',
-    windowsHide: true
+    windowsHide: true,
+    shell: true
   });
 
   children.set(label, child);
+
+  child.on('error', (error) => {
+    console.error(`[${label}] failed to start:`, error);
+    process.exitCode = 1;
+    stopAll('SIGTERM');
+  });
 
   child.on('exit', (code, signal) => {
     children.delete(label);
