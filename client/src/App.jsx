@@ -250,7 +250,7 @@ export default function App() {
               </label>
 
               <button className="button button--primary" type="submit" disabled={loading}>
-                {loading ? 'Shortening�' : 'Shorten URL'}
+                {loading ? 'Shortening...' : 'Shorten URL'}
               </button>
             </form>
 
@@ -276,11 +276,7 @@ export default function App() {
               }
               disabled={refreshing}
             >
-              <svg className={`button__icon${refreshing ? ' button__icon--spinning' : ''}`} viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M20 11a8 8 0 1 0 2 5.3" />
-                <path d="M20 4v7h-7" />
-              </svg>
-              {refreshing ? 'Refreshing…' : 'Refresh'}
+              {refreshing ? 'Refreshing...' : 'Refresh'}
             </button>
           </div>
 

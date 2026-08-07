@@ -427,26 +427,6 @@ input:focus {
   letter-spacing: -0.025em;
 }
 
-.button__icon {
-  width: 1.05rem;
-  height: 1.05rem;
-  fill: none;
-  stroke: currentColor;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  stroke-width: 1.9;
-}
-
-.button__icon--spinning {
-  animation: refresh-spin 0.8s linear infinite;
-}
-
-@keyframes refresh-spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
 .link-list {
   display: grid;
   gap: 14px;
