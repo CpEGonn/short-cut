@@ -192,8 +192,14 @@ export default function App() {
       <main className="app-shell">
         <section className="hero">
           <div className="hero__content">
-            <div className="brand-lockup"><img className="brand-logo" src="/logo.webp" alt="ShortCut Atlas" /><p className="eyebrow">ShortCut atlas</p></div>
-            <h1>Stage, shorten, and audit links with less friction.</h1>
+            <div className="brand-lockup">
+              <img className="brand-logo" src="/logo.webp" alt="ShortCut Atlas" />
+              <div className="brand-name">
+                <span>ShortCut</span>
+                <small>Atlas</small>
+              </div>
+            </div>
+            <h1>Short links, made easy to manage.</h1>
             <p className="hero-copy">
               A focused workspace for turning long destinations into concise, shareable links. Create a short URL,
               copy it instantly, and keep the ten most recent records in view without leaving the page.

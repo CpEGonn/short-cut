@@ -108,7 +108,7 @@ input:focus-visible {
 }
 
 .page-shell {
-  width: min(1240px, calc(100% - 32px));
+  width: min(1440px, calc(100% - 56px));
   margin: 0 auto;
   padding: 28px 0 56px;
 }
@@ -120,7 +120,7 @@ input:focus-visible {
 
 .hero {
   display: grid;
-  grid-template-columns: minmax(0, 1.08fr) minmax(320px, 0.92fr);
+  grid-template-columns: minmax(0, 1.2fr) minmax(380px, 0.8fr);
   grid-template-areas: 'content panel';
   gap: 18px;
   align-items: stretch;
@@ -146,8 +146,8 @@ input:focus-visible {
   grid-area: content;
   display: grid;
   align-content: center;
-  gap: 18px;
-  padding: 32px;
+  gap: 20px;
+  padding: 38px 42px;
 }
 
 .control-panel {
@@ -155,7 +155,7 @@ input:focus-visible {
   align-self: start;
   position: sticky;
   top: 18px;
-  padding: 24px;
+  padding: 30px;
 }
 
 .hero__content::after,
@@ -188,9 +188,9 @@ h2 {
 }
 
 h1 {
-  max-width: 11ch;
-  font-size: clamp(2.8rem, 6vw, 5.4rem);
-  line-height: 0.92;
+  max-width: 13ch;
+  font-size: clamp(3rem, 4.8vw, 4.85rem);
+  line-height: 0.98;
 }
 
 h2 {
@@ -199,7 +199,7 @@ h2 {
 }
 
 .hero-copy {
-  max-width: 60ch;
+  max-width: 64ch;
   margin: 0;
   color: var(--text-soft);
   font-size: 1.02rem;
@@ -255,7 +255,7 @@ h2 {
 }
 
 .control-panel__top h2 {
-  max-width: 12ch;
+  max-width: 16ch;
 }
 
 .shorten-form {
@@ -388,7 +388,7 @@ input:focus {
 
 .panel {
   border-radius: 30px;
-  padding: 24px;
+  padding: 30px;
 }
 
 .panel__header {
@@ -588,7 +588,7 @@ input:focus {
 
 @media (max-width: 860px) {
   .page-shell {
-    width: min(100% - 24px, 1240px);
+    width: min(100% - 24px, 1440px);
     padding: 18px 0 40px;
   }
 
@@ -658,7 +658,7 @@ input:focus {
 
 @media (max-width: 620px) {
   .page-shell {
-    width: min(100% - 16px, 1240px);
+    width: min(100% - 16px, 1440px);
     padding-top: 12px;
   }
 
@@ -780,11 +780,33 @@ input:focus {
 .brand-lockup {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 13px;
 }
 
 .brand-logo {
-  width: 48px;
-  height: 48px;
+  width: 44px;
+  height: 44px;
   object-fit: contain;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.22);
+}
+
+.brand-name {
+  display: grid;
+  gap: 1px;
+  color: var(--text);
+  font-family: 'IBM Plex Mono', 'Cascadia Mono', monospace;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.brand-name small {
+  color: var(--accent);
+  font-family: 'IBM Plex Sans', 'Segoe UI', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.26em;
 }
