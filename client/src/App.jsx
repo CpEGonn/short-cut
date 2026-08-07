@@ -264,7 +264,7 @@ export default function App() {
           <div className="panel__header">
             <div>
               <p className="label">Recent links</p>
-              <h2>Audit the latest short codes and their usage at a glance.</h2>
+              <h2>Your newest short links, at a glance.</h2>
             </div>
             <button
               type="button"
@@ -276,7 +276,11 @@ export default function App() {
               }
               disabled={refreshing}
             >
-              {refreshing ? 'Refreshing�' : 'Refresh'}
+              <svg className={`button__icon${refreshing ? ' button__icon--spinning' : ''}`} viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M20 11a8 8 0 1 0 2 5.3" />
+                <path d="M20 4v7h-7" />
+              </svg>
+              {refreshing ? 'Refreshing…' : 'Refresh'}
             </button>
           </div>
 

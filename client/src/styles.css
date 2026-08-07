@@ -155,7 +155,7 @@ input:focus-visible {
   align-self: start;
   position: sticky;
   top: 18px;
-  padding: 30px;
+  padding: 28px 30px;
 }
 
 .hero__content::after,
@@ -255,13 +255,16 @@ h2 {
 }
 
 .control-panel__top h2 {
-  max-width: 16ch;
+  max-width: 24ch;
+  font-size: clamp(1.45rem, 1.8vw, 1.7rem);
+  line-height: 1.08;
+  letter-spacing: -0.025em;
 }
 
 .shorten-form {
   display: grid;
   gap: 14px;
-  margin-top: 20px;
+  margin-top: 18px;
 }
 
 .field {
@@ -272,6 +275,10 @@ h2 {
 
 .field span {
   font-size: 0.94rem;
+}
+
+.control-panel .field span {
+  font-size: 0.88rem;
 }
 
 input {
@@ -302,6 +309,20 @@ input:focus {
   margin: 14px 0 0;
   color: var(--text-muted);
   font-size: 0.92rem;
+}
+
+.control-panel input {
+  min-height: 54px;
+}
+
+.control-panel .button--primary {
+  min-height: 50px;
+}
+
+.control-panel .helper-copy {
+  max-width: 54ch;
+  font-size: 0.88rem;
+  line-height: 1.45;
 }
 
 .button {
@@ -400,7 +421,30 @@ input:focus {
 }
 
 .panel__header h2 {
-  max-width: 18ch;
+  max-width: 28ch;
+  font-size: clamp(1.45rem, 1.9vw, 1.78rem);
+  line-height: 1.08;
+  letter-spacing: -0.025em;
+}
+
+.button__icon {
+  width: 1.05rem;
+  height: 1.05rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.9;
+}
+
+.button__icon--spinning {
+  animation: refresh-spin 0.8s linear infinite;
+}
+
+@keyframes refresh-spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .link-list {
